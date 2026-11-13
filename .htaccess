@@ -1,0 +1,12 @@
+# Bloqueia arquivos que começam com ponto (.env, .env.example, .gitignore...)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Bloqueia os arquivos .sql (schema com o hash da senha do admin)
+<FilesMatch "\.sql$">
+    Require all denied
+</FilesMatch>
+
+# Bloqueia a pasta .git (histórico do repositório)
+RedirectMatch 404 /\.git

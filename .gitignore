@@ -1,0 +1,7 @@
+# Credenciais
+.env
+
+# Arquivos do sistema/editor
+.vscode/
+Thumbs.db
+desktop.ini
