@@ -1,7 +1,7 @@
 <?php 
 
-require "./include/funcoes.php";
-require "./config/conexao.php";
+require_once "./include/funcoes.php";
+require_once "./config/conexao.php";
 
 $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 

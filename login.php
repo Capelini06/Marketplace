@@ -1,11 +1,13 @@
 <?php
-include "include/cabecalho.php";
-require "include/funcoes.php"; 
+if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+require_once "include/funcoes.php"; 
 
 if(isset($_SESSION["usuario_id"])){
     header("Location: index.php");
     exit;
 }
+
+include "include/cabecalho.php";
 
 $email = "";
 $senha = "";
@@ -27,6 +29,8 @@ $senha = "";
         <?php  if(isset($_GET["erro"])): ?>
             <p class="notice"> Email ou senha inválidos</p>
         <?php endif; ?>
+
+        <input type="hidden" name="csrf" value="<?= csrfToken()?>">
 
         <label  for="email">E-mail:</label>
         <input  type="email"

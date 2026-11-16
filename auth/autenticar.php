@@ -2,12 +2,14 @@
 
 session_start();
 
-require __DIR__ . "/../config/conexao.php";
+require_once __DIR__ . "/../config/conexao.php";
+require_once __DIR__ . "/../include/funcoes.php";
 
 if($_SERVER["REQUEST_METHOD"] !== "POST"){
     header("Location: ../login.php");
     exit;
 }
+validarCsrf();
 
 $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 $senha = $_POST["senha"] ?? "";

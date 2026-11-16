@@ -1,8 +1,13 @@
-<?php include "include/cabecalho.php"; ?>
+<?php 
+include "include/cabecalho.php"; 
+require_once __DIR__ . "/include/funcoes.php";
+?>
+
 
 <main class="section">
     <?php if (isset($_SESSION["usuario_id"])): ?>
         <form action="auth/logout.php" method="post">
+            <input type="hidden" name="csrf" value="<?= csrfToken()?>">
             <button type="submit">DESLOGAR</button>
         </form>
     <?php else: ?>

@@ -1,4 +1,6 @@
 <?php
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+require_once __DIR__ . "/include/funcoes.php";
 
 $erros = [];
 $sucesso = "";
@@ -8,6 +10,8 @@ $senha = "";
 $confirmarSenha = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    validarCsrf();
+
     $nome = trim($_POST["nome"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $senha = $_POST["senha"] ?? "";
@@ -69,13 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-require "./include/funcoes.php";
-include "./include/cabecalho.php";
-
 if(isset($_SESSION["usuario_id"])){
     header("Location: /index.php");
     exit;
 }
+
+include "./include/cabecalho.php";
 ?>
 
 <main class="login">
@@ -91,6 +94,8 @@ if(isset($_SESSION["usuario_id"])){
     </section>
         
         <form action="cadastro.php" method="post">
+            <input type="hidden" name="csrf" value="<?= csrfToken()?>">
+            
             <small>NOVA CONTA</small>
             <h2>Cadastre-se:</h2>
             <?php if(!empty($erros)): ?>

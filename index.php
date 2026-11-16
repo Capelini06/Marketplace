@@ -1,7 +1,7 @@
 <?php
 include "./include/cabecalho.php";
-require "./include/funcoes.php";
-require "./config/conexao.php";
+require_once "./include/funcoes.php";
+require_once "./config/conexao.php";
 
 $produtos = $pdo->query("SELECT id, nome, preco, descricao FROM produtos WHERE ativo = TRUE ORDER BY id DESC LIMIT 3")->fetchAll();
 ?>
