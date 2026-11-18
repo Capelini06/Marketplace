@@ -1,9 +1,15 @@
 <?php
-include "./include/cabecalho.php";
-require_once "./include/funcoes.php";
-require_once "./config/conexao.php";
+require_once __DIR__ . "/../config/conexao.php";
+include __DIR__ . "/../include/cabecalho.php";
+require_once __DIR__ . "/../include/funcoes.php";
 
-$produtos = $pdo->query("SELECT id, nome, preco, descricao FROM produtos WHERE ativo = TRUE ORDER BY id DESC LIMIT 3")->fetchAll();
+$produtos = $pdo->query(" SELECT p.id, p.nome, p.preco, p.descricao,
+            (SELECT i.caminho FROM produto_imagens i
+            WHERE i.produto_id = p.id
+            ORDER BY i.ordem, i.id LIMIT 1) AS imagem
+    FROM produtos p
+    WHERE p.ativo = TRUE
+    ORDER BY p.id DESC LIMIT 3")->fetchAll();
 ?>
 
 <main>
@@ -11,7 +17,7 @@ $produtos = $pdo->query("SELECT id, nome, preco, descricao FROM produtos WHERE a
         <div>
             <small>Lançamentos • 2026</small>
             <h1>TECNOLOGIA <br>
-            <em>SEM LIMITES</em>
+                <em>SEM LIMITES</em>
             </h1>
             <p>Smartphones, notebooks, áudio e acessórios com o melhor desempenho para o seu dia a dia.</p>
             <a href="loja.php" class="btn light">
@@ -25,11 +31,14 @@ $produtos = $pdo->query("SELECT id, nome, preco, descricao FROM produtos WHERE a
         <small>Os mais procurados</small>
         <h2>Destaques da semana</h2>
         <div class="products">
-
             <?php foreach ($produtos as $p): ?>
                 <a href="produtos.php?id=<?= (int) $p["id"] ?>" class="product">
                     <div class="visual">
-                        VOLTRA / <?= (int) $p["id"] ?>
+                        <?php if (!empty($p["imagem"])): ?>
+                            <img src="<?= e($p["imagem"]) ?>" alt="<?= e($p["nome"]) ?>">
+                        <?php else: ?>
+                            VOLTRA / <?= (int) $p["id"] ?>
+                        <?php endif; ?>
                     </div>
                     <h3>
                         <?= e($p["nome"]) ?>
@@ -46,4 +55,4 @@ $produtos = $pdo->query("SELECT id, nome, preco, descricao FROM produtos WHERE a
         </div>
     </section>
 </main>
-<?php include "./include/rodape.php" ?>
+<?php include __DIR__ . "/../include/rodape.php" ?>

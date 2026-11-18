@@ -1,3 +1,14 @@
+-- nome=
+-- categoria_id=
+-- slug=
+-- descricao=
+-- garantia_meses=
+-- preco=
+-- estoque=
+-- estoque_minimo=
+-- ativo=
+
+
 -- ---------------------------------------------------------------
 -- Schema Voltra Tech - versão PostgreSQL (Supabase)
 -- Rode este arquivo inteiro no SQL Editor do Supabase.
@@ -50,16 +61,16 @@ CREATE TABLE produtos (
     modelo VARCHAR(80) NULL,
     descricao TEXT NULL,
     especificacoes TEXT NULL,
-    voltagem VARCHAR(10) NULL CHECK (voltagem IN ('110V', '220V', 'bivolt', 'bateria', 'usb')),
     garantia_meses INT NOT NULL DEFAULT 12,
     preco NUMERIC(10,2) NOT NULL,
     estoque INT NOT NULL DEFAULT 0,
     estoque_minimo INT NOT NULL DEFAULT 3,
+    comprimento_cm NUMERIC(5,1) NULL,
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    voltagem VARCHAR(20) NULL,
     peso_g INT NULL,
     altura_cm NUMERIC(5,1) NULL,
     largura_cm NUMERIC(5,1) NULL,
-    comprimento_cm NUMERIC(5,1) NULL,
-    ativo BOOLEAN NOT NULL DEFAULT TRUE,
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP NULL
 );

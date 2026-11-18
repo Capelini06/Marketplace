@@ -1,6 +1,11 @@
 <?php
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-require_once __DIR__ . "/include/funcoes.php";
+require_once __DIR__ . "/../include/funcoes.php";
+
+if(isset($_SESSION["usuario_id"])){
+    header("Location: index.php");
+    exit;
+}
 
 $erros = [];
 $sucesso = "";
@@ -36,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($erros)) {
         try {
-            require_once __DIR__ . "/config/conexao.php";
+            require_once __DIR__ . "/../config/conexao.php";
             
             if (!isset($pdo) || !($pdo instanceof PDO)) {
                 throw new RuntimeException(
@@ -73,12 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-if(isset($_SESSION["usuario_id"])){
-    header("Location: /index.php");
-    exit;
-}
-
-include "./include/cabecalho.php";
+include __DIR__ . "/../include/cabecalho.php";
 ?>
 
 <main class="login">
@@ -164,4 +164,4 @@ include "./include/cabecalho.php";
 </main>
 
 
-<?php include "./include/rodape.php"; ?>
+<?php include __DIR__ . "/../include/rodape.php"; ?>

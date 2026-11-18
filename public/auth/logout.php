@@ -1,15 +1,8 @@
 <?php
-require_once __DIR__ . "/../include/funcoes.php";
-
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../login.php");
-    exit;
-}
+require_once __DIR__ . "/../../include/funcoes.php";
 
 // Começa a sessão
 session_start();
-
-validarCsrf();
 
 // Limpa as variaveis da sessão
 $_SESSION = [];

@@ -277,6 +277,23 @@ p {
     box-shadow: 0 20px 40px rgba(0, 0, 0, .5)
 }
 
+.visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Quando o card tem foto: tira o espaçamento e o desenho de celular decorativo */
+.visual:has(img) {
+    padding: 0;
+}
+
+.visual:has(img)::after {
+    display: none;
+}
+
+
 .product h3 {
     font-size: 15px;
     font-weight: 600;
@@ -515,6 +532,48 @@ p {
 
 .tablewrap {
     overflow: auto
+}
+
+/* Destaque de estoque abaixo do mínimo */
+.linha-estoque-baixo td {
+    background: rgba(255, 82, 82, .06)
+}
+
+.linha-estoque-baixo td:first-child {
+    box-shadow: inset 3px 0 0 #ff5252
+}
+
+.estoque-baixo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    background: rgba(255, 82, 82, .12);
+    border: 1px solid rgba(255, 82, 82, .4);
+    color: #ff8a8a;
+    font-weight: 700;
+    white-space: nowrap
+}
+
+.estoque-baixo-icone {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ff5252;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1
+}
+
+.estoque-baixo-texto {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    opacity: .85
 }
 
 table {

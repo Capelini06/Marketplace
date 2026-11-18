@@ -1,7 +1,26 @@
 <?php
 
+// Prefixo relativo até a raiz de public/ ("../" para páginas em admin/ ou auth/)
+function prefixo(): string
+{
+    $script = str_replace('\\', '/', $_SERVER['PHP_SELF'] ?? '');
+    return (str_contains($script, '/admin/') || str_contains($script, '/auth/')) ? '../' : '';
+}
+
 function e(?string $valor): string{
     return htmlspecialchars($valor ?? "", ENT_QUOTES, "UTF-8");
+}
+
+function exigirLogin(): void
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    if (!isset($_SESSION['usuario_id'])) {
+        header('Location: ' . prefixo() . 'login.php');
+        exit;
+    }
 }
 
 // Verifica se o usuario que esta acessando é o admin ou não, se não for, vai para o login
@@ -13,11 +32,20 @@ function exigirAdmin(): void{
         ||
         ($_SESSION["tipo"] ?? "")
         !== "admin"){
-            header("Location: ../login.php");
+            header("Location: " . prefixo() . "login.php");
             exit;
         }
 }
 
+function exigirCliente(): void
+{
+    exigirLogin();
+
+    if (($_SESSION['tipo'] ?? '') !== 'cliente') {
+        header('Location: ' . prefixo() . 'admin/painelProdutos.php');
+        exit;
+    }
+}
 function csrfToken(): string {
     if(empty($_SESSION["csrf"])){
         $_SESSION["csrf"] = bin2hex(random_bytes(32));
