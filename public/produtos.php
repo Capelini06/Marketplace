@@ -73,6 +73,12 @@ include __DIR__ . "/../include/cabecalho.php";
                         <?= (int) $produto["garantia_meses"] ?> meses
                     </li>
                 </ul>
+                <form action="acaoCarrinho.php" method="post">
+                    <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
+                    <input type="hidden" name="acao" value="adicionar">
+                    <input type="hidden" name="id" value="<?= (int) $produto["id"] ?>">
+                    <button type="submit" class="product__btn">Adicionar ao carrinho</button>
+                </form>
             </div>
         </div>
     <?php endif ?>

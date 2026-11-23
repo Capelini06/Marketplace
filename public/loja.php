@@ -4,7 +4,10 @@ require __DIR__ . "/../include/funcoes.php";
 
 $busca = trim($_GET['busca'] ?? '');
 
-$sql = 'SELECT p.*, c.nome AS categoria FROM produtos p 
+$sql = 'SELECT p.*, c.nome AS categoria,
+            (SELECT i.caminho FROM produto_imagens i
+            WHERE i.produto_id = p.id
+            ORDER BY i.ordem, i.id LIMIT 1) AS imagem FROM produtos p 
         INNER JOIN categorias c ON p.categoria_id=c.id';
 
 if ($busca !== '')

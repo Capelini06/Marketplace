@@ -24,6 +24,7 @@ $prefixo = prefixo();
         <a href="<?= $prefixo ?>admin/painelProdutos.php">Admin</a>
     <?php endif; ?>
     <?php if (isset($_SESSION['usuario_id'])): ?>
+        <a href="<?= $prefixo ?>carrinho.php">Carrinho <?= totalCarrinho();?></a>
         <a href="<?= $prefixo ?>auth/logout.php">Sair</a>
     <?php else: ?>
         <a href="<?= $prefixo ?>login.php">Entrar</a>

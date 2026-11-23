@@ -49,6 +49,12 @@ $produtos = $pdo->query(" SELECT p.id, p.nome, p.preco, p.descricao,
                     <b>
                         R$ <?= number_format((float) $p["preco"], 2, ",", ".") ?>
                     </b>
+                    <form action="acaoCarrinho.php" method="post">
+                        <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <input type="hidden" name="id" value="<?= (int) $p["id"] ?>">
+                        <button type="submit" class="product__btn">Adicionar ao carrinho</button>
+                    </form>
                 </a>
             <?php endforeach; ?>
 
