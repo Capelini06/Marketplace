@@ -602,6 +602,222 @@ th {
     color: white
 }
 
+/* ---------- Botão "Adicionar ao carrinho" ---------- */
+.product__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #06101c;
+    padding: 12px 20px;
+    font: 700 13px Inter, Arial, sans-serif;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s, filter .2s
+}
+
+.product__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow)
+}
+
+.product__btn:active {
+    transform: translateY(0);
+    filter: brightness(.92)
+}
+
+.product__btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px
+}
+
+/* Dentro do card de produto: botão ocupa a largura toda */
+.product form {
+    margin-top: 14px
+}
+
+.product .product__btn {
+    width: 100%
+}
+
+/* Na página de detalhe */
+.detail form .product__btn {
+    padding: 15px 28px;
+    font-size: 14px
+}
+
+/* ---------- Carrinho ---------- */
+.container {
+    width: min(1100px, 86%);
+    margin: 0 auto;
+    padding: 75px 0
+}
+
+.container>h1 {
+    font: 700 clamp(34px, 5vw, 54px)/1 'Space Grotesk';
+    margin: 0 0 30px
+}
+
+.container>p {
+    color: var(--muted)
+}
+
+.container>p a {
+    color: var(--accent);
+    font-weight: 700
+}
+
+.cart {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden
+}
+
+.cart th,
+.cart td {
+    padding: 16px;
+    vertical-align: middle
+}
+
+.cart td {
+    font-size: 14px
+}
+
+.cart td:first-child {
+    font-weight: 600
+}
+
+.cart td:nth-child(4) {
+    color: var(--accent);
+    font-weight: 700
+}
+
+.cart tbody tr {
+    transition: background .2s
+}
+
+.cart tbody tr:hover {
+    background: var(--surface-2)
+}
+
+.cart tbody tr:last-child td {
+    border-bottom: 0
+}
+
+.cart form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0
+}
+
+.cart input[type="number"] {
+    width: 70px;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg)
+}
+
+.cart input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, .15)
+}
+
+.cart button {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--text);
+    padding: 9px 14px;
+    font: 600 12px Inter, Arial, sans-serif;
+    cursor: pointer;
+    transition: border-color .2s, color .2s, background .2s
+}
+
+.cart button:hover {
+    border-color: var(--accent);
+    color: var(--accent)
+}
+
+/* Botão "Remover" (última coluna) */
+.cart td:last-child {
+    text-align: right
+}
+
+.cart td:last-child button {
+    background: rgba(255, 82, 82, .1);
+    border-color: rgba(255, 82, 82, .35);
+    color: #ff8a8a
+}
+
+.cart td:last-child button:hover {
+    background: #c62828;
+    border-color: #c62828;
+    color: #fff
+}
+
+.cart__total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 12px;
+    margin: 28px 0 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted)
+}
+
+.cart__total b {
+    font: 700 32px 'Space Grotesk';
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--accent)
+}
+
+.cart__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line)
+}
+
+.cart__actions>a:not(.btn) {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color .2s
+}
+
+.cart__actions>a:not(.btn):hover {
+    color: var(--accent)
+}
+
+.cart__actions>a:not(.btn):before {
+    content: '← '
+}
+
+.cart__actions .btn {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #06101c
+}
+
+.cart__actions .btn:hover {
+    box-shadow: var(--glow)
+}
+
 /* ---------- Responsivo ---------- */
 @media(max-width:750px) {
     .site-header {
@@ -647,6 +863,74 @@ th {
 
     .login form {
         padding: 55px 8%
+    }
+
+    /* Carrinho vira lista de cartões */
+    .container {
+        width: 90%;
+        padding: 55px 0
+    }
+
+    .cart thead {
+        display: none
+    }
+
+    .cart,
+    .cart tbody,
+    .cart tr,
+    .cart td {
+        display: block;
+        width: 100%
+    }
+
+    .cart tr {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line)
+    }
+
+    .cart tbody tr:last-child {
+        border-bottom: 0
+    }
+
+    .cart td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border: 0
+    }
+
+    .cart td:first-child {
+        font-size: 16px
+    }
+
+    .cart td:nth-child(2):before {
+        content: 'Preço';
+        color: var(--muted);
+        font-size: 12px
+    }
+
+    .cart td:nth-child(3):before {
+        content: 'Qtd';
+        color: var(--muted);
+        font-size: 12px
+    }
+
+    .cart td:nth-child(4):before {
+        content: 'Subtotal';
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 400
+    }
+
+    .cart td:last-child {
+        justify-content: flex-end
+    }
+
+    .cart__actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        text-align: center
     }
 }
 

@@ -7,8 +7,8 @@ $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
 $stmt = $pdo->prepare("SELECT p.*, c.nome AS categoria,
             (SELECT i.caminho FROM produto_imagens i
-             WHERE i.produto_id = p.id
-             ORDER BY i.ordem, i.id LIMIT 1) AS imagem
+            WHERE i.produto_id = p.id
+            ORDER BY i.ordem, i.id LIMIT 1) AS imagem
     FROM produtos p
     INNER JOIN categorias c ON c.id = p.categoria_id
     WHERE p.id = :id AND p.ativo = TRUE");

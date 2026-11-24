@@ -24,7 +24,7 @@ include __DIR__ . "/../../include/cabecalho.php";
     <h1>
         <?= $id?"editar":"cadastrar"?> Produto
     </h1>
-    <form class="adminform" method="post" action="salvar.php" enctype="multipart/form-data">
+    <form class="adminform" method="post" action="salvarProduto.php" enctype="multipart/form-data">
         <input  type="hidden" name="id" id="id" value="<?= (int)($p["id"]??0)?>">
         <input type="hidden" name="csrf" value="<?= csrfToken()?>">
         <label  for="nome">Nome: </label>
