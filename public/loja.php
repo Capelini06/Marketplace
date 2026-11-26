@@ -6,12 +6,13 @@ $busca = trim($_GET['busca'] ?? '');
 
 $sql = 'SELECT p.*, c.nome AS categoria,
             (SELECT i.caminho FROM produto_imagens i
-            WHERE i.produto_id
+            WHERE i.produto_id = p.id
             ORDER BY i.ordem, i.id LIMIT 1) AS imagem FROM produtos p 
-        INNER JOIN categorias c ON p.categoria_id=c.id';
+        INNER JOIN categorias c ON p.categoria_id = c.id
+        WHERE p.estoque > 0 AND p.ativo = TRUE';
 
 if ($busca !== '')
-    $sql .= ' WHERE p.nome ILIKE :busca';
+    $sql .= ' AND p.nome ILIKE :busca';
 $sql .= ' ORDER BY p.nome';
 
 $stmt = $pdo->prepare($sql);
@@ -25,7 +26,7 @@ include __DIR__ . '/../include/cabecalho.php';
 
 <main class="section">
     <small>VOLTRA / COLEÇÃO</small>
-    <h1>Econtre seu próximo periférico.</h1>
+    <h1>Encontre seu próximo periférico.</h1>
     <form method="get" class="search">
         <input name="busca" value="<?= e($busca) ?>" placeholder="Buscar produto...">
         <button class="btn">Buscar</button>
@@ -43,7 +44,7 @@ include __DIR__ . '/../include/cabecalho.php';
                 <h3>
                     <?= e($p['nome']) ?>
                 </h3>
-                <b>R$ <?= number_format((float) $p['preco'], 2, ',', '.') ?></b>
+                <b><?= preco($p['preco']) ?></b>
             </a>
         <?php endforeach; ?>
         <?php if (!$produtos): ?>

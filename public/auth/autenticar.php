@@ -2,12 +2,15 @@
 session_start();
 
 require_once __DIR__ . '/../../config/conexao.php';
+require_once __DIR__ . '/../../include/funcoes.php';
 
 // O endpoint de autenticação só aceita requisições POST.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../login.php');
     exit;
 }
+
+validarCsrf();
 
 $email = trim($_POST['email'] ?? '');
 $senha = $_POST['senha'] ?? '';

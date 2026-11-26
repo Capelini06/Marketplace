@@ -7,16 +7,16 @@ require_once __DIR__ . "/../../include/funcoes.php";
 
 exigirAdmin();
 
-$produtos=$pdo->query(" SELECT p.id, p.nome, p.garantia_meses,p.preco, p.estoque, p.estoque_minimo, p.ativo c.nome AS categoria 
+$produtos=$pdo->query(" SELECT p.id, p.nome, p.garantia_meses, p.preco, p.estoque, p.estoque_minimo, c.nome AS categoria 
                         FROM produtos p INNER JOIN categorias c ON c.id = p.categoria_id
                         ORDER BY p.id DESC")->fetchAll();
 
-$titulo = "ADMIN | VITTA";
+$titulo = "ADMIN | VOLTRA";
 include __DIR__ . "/../../include/cabecalho.php";
 ?>
 
 <main class="section">
-    <h1>Adminstração de Produtos</h1>
+    <h1>Administração de Produtos</h1>
     <p><a class="btn" href="formProduto.php">Novo produto</a></p>
     <p><a class="btn" href="formCategoria.php">Nova categoria</a></p>
     <div class="tablewrap">
@@ -36,7 +36,7 @@ include __DIR__ . "/../../include/cabecalho.php";
                 <tr class="<?= $estoqueBaixo ? "linha-estoque-baixo" : "" ?>">
                     <td><?= e($p["nome"]) ?></td>
                     <td><?= e($p["categoria"]) ?></td>
-                    <td><?= number_format((float) ($p["preco"]), 2, ",", ".") ?></td>
+                    <td><?= preco($p["preco"]) ?></td>
                     <td><?= (int) $p["garantia_meses"] ?> meses</td>
                     <?php if($estoqueBaixo): ?>
                     <td>
@@ -51,7 +51,7 @@ include __DIR__ . "/../../include/cabecalho.php";
                     <?php endif ?>
                     <td><?= (int) $p["estoque_minimo"] ?></td>
                     <td>
-                        <a href="form.php?id=<?= (int) $p["id"] ?>">Editar</a>
+                        <a href="formProduto.php?id=<?= (int) $p["id"] ?>">Editar</a>
                         |
                         <a href="excluir.php?id=<?= (int) $p["id"] ?>">Excluir</a>
                     </td>

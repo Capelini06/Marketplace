@@ -42,7 +42,7 @@ include __DIR__ . "/../include/cabecalho.php";
                 </h1>
 
                 <h2>
-                    R$ <?= number_format((float) $produto["preco"], 2, ",", ".") ?>
+                    <?= preco($produto["preco"]) ?>
                 </h2>
 
                 <p>
@@ -73,12 +73,17 @@ include __DIR__ . "/../include/cabecalho.php";
                         <?= (int) $produto["garantia_meses"] ?> meses
                     </li>
                 </ul>
-                <form action="acaoCarrinho.php" method="post">
-                    <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
-                    <input type="hidden" name="acao" value="adicionar">
-                    <input type="hidden" name="id" value="<?= (int) $produto["id"] ?>">
-                    <button type="submit" class="product__btn">Adicionar ao carrinho</button>
-                </form>
+                <?php if ((int) $produto["estoque"] > 0): ?>
+                    <form action="acaoCarrinho.php" method="post">
+                        <input type="hidden" name="csrf" value="<?= csrfToken() ?>">
+                        <input type="hidden" name="acao" value="adicionar">
+                        <input type="hidden" name="id" value="<?= (int) $produto["id"] ?>">
+                        <input type="hidden" name="voltar" value="produto.php?id=<?= (int) $produto["id"] ?>">
+                        <button type="submit" class="product__btn">Adicionar ao carrinho</button>
+                    </form>
+                <?php else: ?>
+                    <p class="notice">Produto esgotado no momento.</p>
+                <?php endif; ?>
             </div>
         </div>
     <?php endif ?>

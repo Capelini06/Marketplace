@@ -5,12 +5,13 @@ require_once __DIR__ . "/../../config/conexao.php";
 require_once __DIR__ . "/../../include/funcoes.php";
 
 exigirAdmin();
-validarCsrf();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: painelProdutos.php");
     exit;
 }
+
+validarCsrf();
 
 $id = (int) ($_POST["id"] ?? 0);
 $nome = trim($_POST["nome"] ?? "");
@@ -21,14 +22,14 @@ $garantia_meses = filter_input(INPUT_POST, "garantia_meses", FILTER_VALIDATE_INT
 $arquivo = $_FILES['imagem'] ?? null;
 $extensao = null;
 
-if ($arquivo && $arquivo['error'] !== UPLOAD_ERR_NO_FILE) {   // imagem é opcional
+if ($arquivo && $arquivo['error'] !== UPLOAD_ERR_NO_FILE) { 
     if ($arquivo['error'] !== UPLOAD_ERR_OK) {
         exit('Falha no envio da imagem.');
     }
     if ($arquivo['size'] > 2 * 1024 * 1024) {
         exit('A imagem deve ter no máximo 2 MB.');
     }
-    $tipos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+    $tipos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'image/avif' => 'avif'];
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($arquivo['tmp_name']);
     if (!isset($tipos[$mime])) {
         exit('Envie uma imagem JPG, PNG ou WEBP.');
@@ -58,7 +59,7 @@ $produto = [
     ":nome" => $nome,
     ":categoria_id" => ($_POST["categoria_id"] ?? "") !== "" ? (int) $_POST["categoria_id"] : null,
     ":slug" => $slug,
-    ":descricao" => trim($_POST["descricao"]),
+    ":descricao" => trim($_POST["descricao"] ?? ""),
     ":garantia_meses" => $garantia_meses,
     ":preco" => $preco,
     ":estoque" => $estoque,
@@ -93,9 +94,8 @@ try{
         $img->execute([':pid' => $produtoId, ':caminho' => $caminho]);
     }
 } catch(PDOException $erro){
-    error_log($erro);
-    // Temporário, para depuração: mostra o erro real. Remova antes de entregar.
-    exit("Falha ao atualizar o banco de dados: " . e($erro->getMessage()));
+    error_log($erro->getMessage());
+    exit("Não foi possível salvar o produto.");
 }
 
 header("Location: painelProdutos.php");

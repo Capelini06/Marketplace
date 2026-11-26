@@ -22,7 +22,7 @@ include __DIR__ . "/../../include/cabecalho.php";
 
 <main class="section narrow">
     <h1>
-        <?= $id?"editar":"cadastrar"?> Produto
+        <?= $id ? "Editar" : "Cadastrar" ?> Produto
     </h1>
     <form class="adminform" method="post" action="salvarProduto.php" enctype="multipart/form-data">
         <input  type="hidden" name="id" id="id" value="<?= (int)($p["id"]??0)?>">
@@ -71,7 +71,7 @@ include __DIR__ . "/../../include/cabecalho.php";
                 min="0"
                 step="0.01"
                 required
-                value="<?= (float) $p["preco"] ?>">
+                value="<?= $p["preco"] === "" ? "" : e((string) $p["preco"]) ?>">
 
         <br><br>
 
@@ -97,8 +97,8 @@ include __DIR__ . "/../../include/cabecalho.php";
 
         <br><br>
 
-        <label  for="imagens">Imagens: </label>
-        <input  type="file" name="imagem" accept="image/jpeg,image/png,image/webp">
+        <label  for="imagem">Imagem: </label>
+        <input  type="file" name="imagem" id="imagem" accept="image/jpeg,image/png,image/webp,image/avif">
 
         <button class="btn">Enviar</button>
     </form>

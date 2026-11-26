@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($consulta->fetch()) {
                 $erros[] = "ja existe uma conta cadastrada com esse e-mail!";
             } else {
-                // password_hash criptografa a senha oara hash
+                // password_hash criptografa a senha para hash
                 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
                 $sql = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)";

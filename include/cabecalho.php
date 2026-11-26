@@ -10,7 +10,7 @@ $prefixo = prefixo();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $titulo ?? "Voltra Tech - Eletrônicos" ?></title>
+    <title><?= e($titulo ?? "Voltra Tech - Eletrônicos") ?></title>
     <link rel="stylesheet" href="<?= $prefixo ?>assets/css/style.css">
 </head>
 

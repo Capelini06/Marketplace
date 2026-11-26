@@ -14,16 +14,16 @@ include __DIR__ . "/../../include/cabecalho.php";
 
 <main class="section narrow">
     <h1>
-        <?="cadastrar"?> Categoria
+        Cadastrar Categoria
     </h1>
-    <form class="adminform" method="post" action="salvarCategoria.php" enctype="multipart/form-data">>
+    <form class="adminform" method="post" action="salvarCategoria.php">
         <input type="hidden" name="csrf" value="<?= csrfToken()?>">
         <label  for="nome">Nome: </label>
         <input  type="text"
                 name="nome"
                 id="nome"
                 required
-                maxlength="120"
+                maxlength="80"
                 value="<?= e($cats["nome"]) ?>">
 
         <br><br>
