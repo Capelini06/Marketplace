@@ -1,11 +1,11 @@
 <?php
-if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+if (session_status() !== PHP_SESSION_ACTIVE)
+    session_start();
 
 require_once __DIR__ . "/../../config/conexao.php";
 require_once __DIR__ . "/../../include/funcoes.php";
 require_once __DIR__ . '/InfinitePay.php';
 
-// O pedido precisa de um usuario_id (NOT NULL no schema)
 exigirLogin();
 
 $itens = itensCarrinho($pdo);
@@ -28,14 +28,14 @@ if (!$usuario) {
 
 $erros = [];
 $dados = [
-    'telefone'    => $usuario['telefone'] ?? '',
-    'cep'         => '',
-    'rua'         => '',
-    'numero'      => '',
+    'telefone' => $usuario['telefone'] ?? '',
+    'cep' => '',
+    'rua' => '',
+    'numero' => '',
     'complemento' => '',
-    'bairro'      => '',
-    'cidade'      => '',
-    'uf'          => '',
+    'bairro' => '',
+    'cidade' => '',
+    'uf' => '',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,15 +47,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dados['uf'] = strtoupper($dados['uf']);
 
     $fone = preg_replace('/\D/', '', $dados['telefone']);
-    $cep  = preg_replace('/\D/', '', $dados['cep']);
+    $cep = preg_replace('/\D/', '', $dados['cep']);
 
-    if (strlen($fone) < 10 || strlen($fone) > 11) $erros[] = 'Telefone inválido (inclua o DDD).';
-    if (strlen($cep) !== 8) $erros[] = 'CEP inválido.';
-    if ($dados['rua'] === '') $erros[] = 'Informe a rua.';
-    if ($dados['numero'] === '') $erros[] = 'Informe o número.';
-    if ($dados['bairro'] === '') $erros[] = 'Informe o bairro.';
-    if ($dados['cidade'] === '') $erros[] = 'Informe a cidade.';
-    if (!preg_match('/^[A-Z]{2}$/', $dados['uf'])) $erros[] = 'UF inválida.';
+    if (strlen($fone) < 10 || strlen($fone) > 11)
+        $erros[] = 'Telefone inválido (inclua o DDD).';
+    if (strlen($cep) !== 8)
+        $erros[] = 'CEP inválido.';
+    if ($dados['rua'] === '')
+        $erros[] = 'Informe a rua.';
+    if ($dados['numero'] === '')
+        $erros[] = 'Informe o número.';
+    if ($dados['bairro'] === '')
+        $erros[] = 'Informe o bairro.';
+    if ($dados['cidade'] === '')
+        $erros[] = 'Informe a cidade.';
+    if (!preg_match('/^[A-Z]{2}$/', $dados['uf']))
+        $erros[] = 'UF inválida.';
 
     if (!$erros) {
         $endereco = $dados['rua'] . ', ' . $dados['numero']
@@ -96,14 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 (string) $pedidoId,
                 array_map(fn($i) => [
                     'description' => $i['nome'],
-                    'quantity'    => $i['qtd'],
-                    'price'       => centavos($i['preco']),
+                    'quantity' => $i['qtd'],
+                    'price' => centavos($i['preco']),
                 ], $itens),
                 BASE_URL . '/pagamento/obrigado.php',
                 BASE_URL . '/pagamento/webhook.php',
                 [
-                    'name'         => $usuario['nome'],
-                    'email'        => $usuario['email'],
+                    'name' => $usuario['nome'],
+                    'email' => $usuario['email'],
                     'phone_number' => '+55' . $fone,
                 ]
             );
@@ -149,10 +156,12 @@ include __DIR__ . '/../../include/cabecalho.php';
         <p>Comprando como <b><?= e($usuario['nome']) ?></b> (<?= e($usuario['email']) ?>)</p>
 
         <label for="telefone">Telefone</label>
-        <input type="text" id="telefone" name="telefone" value="<?= e($dados['telefone']) ?>" placeholder="(41) 99999-9999" required>
+        <input type="text" id="telefone" name="telefone" value="<?= e($dados['telefone']) ?>"
+            placeholder="(41) 99999-9999" required>
 
         <label for="cep">CEP</label>
-        <input type="text" id="cep" name="cep" value="<?= e($dados['cep']) ?>" placeholder="00000-000" maxlength="9" required>
+        <input type="text" id="cep" name="cep" value="<?= e($dados['cep']) ?>" placeholder="00000-000" maxlength="9"
+            required>
 
         <label for="rua">Rua</label>
         <input type="text" id="rua" name="rua" value="<?= e($dados['rua']) ?>" maxlength="150" required>
@@ -174,6 +183,25 @@ include __DIR__ . '/../../include/cabecalho.php';
 
         <button type="submit" class="btn">Ir para o pagamento</button>
     </form>
+
+    <script>
+        document.getElementById('cep').addEventListener('blur', async function () {
+            const cep = this.value.replace(/\D/g, '');
+            if (cep.length !== 8) return;
+            try {
+                const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const d = await resp.json();
+                if (d.erro) { alert('CEP não encontrado.'); return; }
+                document.getElementById('rua').value = d.logradouro;
+                document.getElementById('bairro').value = d.bairro;
+                document.getElementById('cidade').value = d.localidade;
+                document.getElementById('uf').value = d.uf;
+                document.getElementById('numero').focus();
+            } catch (e) {
+                console.error('Erro ao consultar CEP', e);
+            }
+        });
+    </script>
 
     <p><a href="../carrinho.php">Voltar ao carrinho</a></p>
 </main>
